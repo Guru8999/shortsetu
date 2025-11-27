@@ -9,23 +9,30 @@
     :root {
       --primary: #111827;
       --accent: #2563eb;
-      --bg: #f3f4f6;
-      --card-bg: #ffffff;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #e5e7eb, #f9fafb);
+      min-height: 100vh;
+      /* India flag inspired gradient */
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.25), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(15,23,42,0.35), transparent 55%),
+        linear-gradient(
+          to bottom,
+          #ff9933 0%,   /* kesariya */
+          #ffffff 33%,  /* white */
+          #138808 100%  /* green */
+        );
+      background-attachment: fixed;
       color: #111827;
     }
 
     nav {
-      background: #ffffffdd;
+      background: #ffffffcc;
       backdrop-filter: blur(6px);
       padding: 12px 24px;
       display: flex;
@@ -39,7 +46,7 @@
 
     nav a {
       text-decoration: none;
-      color: #374151;
+      color: #1f2937;
       font-weight: 600;
     }
 
@@ -58,17 +65,18 @@
     .container {
       width: 100%;
       max-width: 640px;
-      background: var(--card-bg);
+      background: rgba(255,255,255,0.97);
       padding: 28px 24px 24px;
       border-radius: 18px;
       box-shadow:
-        0 18px 45px rgba(15, 23, 42, 0.18),
-        0 2px 6px rgba(15, 23, 42, 0.08);
+        0 22px 55px rgba(15,23,42,0.35),
+        0 0 0 1px rgba(255,255,255,0.6);
+      backdrop-filter: blur(4px);
     }
 
     .title {
       font-size: 22px;
-      font-weight: 700;
+      font-weight: 800;
       margin: 0 0 4px;
       text-align: center;
       color: var(--primary);
@@ -77,8 +85,8 @@
     .subtitle {
       font-size: 13px;
       text-align: center;
-      color: #6b7280;
-      margin-bottom: 20px;
+      color: #4b5563;
+      margin-bottom: 18px;
     }
 
     .badge-row {
@@ -93,7 +101,7 @@
       font-size: 11px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: #eff6ff;
+      background: #e0f2fe;
       color: #1d4ed8;
       border: 1px solid #bfdbfe;
     }
@@ -112,13 +120,13 @@
       border: 1px solid #d1d5db;
       font-size: 14px;
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
       background: #f9fafb;
     }
 
     input:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.35);
       background: #ffffff;
     }
 
@@ -128,7 +136,7 @@
       padding: 11px 12px;
       border-radius: 10px;
       border: none;
-      background: linear-gradient(135deg, #111827, #1f2933);
+      background: linear-gradient(135deg, #111827, #1f2937);
       color: #ffffff;
       font-size: 15px;
       font-weight: 600;
@@ -139,13 +147,9 @@
       gap: 6px;
     }
 
-    .primary-btn:hover {
-      filter: brightness(1.05);
-    }
+    .primary-btn:hover { filter: brightness(1.06); }
 
-    .primary-btn span.icon {
-      font-size: 16px;
-    }
+    .primary-btn span.icon { font-size: 16px; }
 
     .output {
       margin-top: 20px;
@@ -186,18 +190,14 @@
       color: #111827;
     }
 
-    .copy-btn:hover {
-      background: #d1d5db;
-    }
+    .copy-btn:hover { background: #d1d5db; }
 
     .download-btn {
       background: #2563eb;
       color: white;
     }
 
-    .download-btn:hover {
-      background: #1d4ed8;
-    }
+    .download-btn:hover { background: #1d4ed8; }
 
     .qr-box {
       text-align: center;
@@ -213,7 +213,7 @@
     .footer-note {
       margin-top: 12px;
       font-size: 11px;
-      color: #9ca3af;
+      color: #6b7280;
       text-align: center;
     }
   </style>
@@ -230,10 +230,10 @@
 <div class="page-wrap">
   <div class="container">
     <h1 class="title">ShortSetu – URL Shortener (TinyURL) + QR</h1>
-    <p class="subtitle">Paste your long link, get a TinyURL short link and instant QR code for sharing.</p>
+    <p class="subtitle">Bharat-made smart tool: paste your long link, get a TinyURL short link and QR code for instant sharing.</p>
 
     <div class="badge-row">
-      <span class="badge">Free Prototype</span>
+      <span class="badge">🇮🇳 Made for India</span>
       <span class="badge">TinyURL Powered</span>
       <span class="badge">QR Download</span>
     </div>
@@ -259,7 +259,7 @@
         anvas id="qrCanvas"></canvas>
       </div>
 
-      <p class="footer-note">Prototype build · Phase 1 – Full analytics & login system aayega backend me.</p>
+      <p class="footer-note">Prototype · Phase 1 – Full analytics, login & payment backend me add honge.</p>
     </div>
   </div>
 </div>
