@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ShortSetu • Smart Link & QR Platform</title>
 
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
   <style>
     :root {
       --primary: #0f172a;
@@ -33,37 +36,81 @@
         );
       background-attachment: fixed;
       color: #111827;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Top navbar */
     nav {
-      background: #ffffffcc;
+      background: #020617dd;
       backdrop-filter: blur(6px);
-      padding: 12px 24px;
+      padding: 10px 24px;
       display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 20px;
-      font-size: 15px;
-      border-bottom: 1px solid #e5e7eb;
+      font-size: 14px;
+      border-bottom: 1px solid #0f172a;
       position: sticky;
       top: 0;
       z-index: 10;
     }
 
-    nav a {
-      text-decoration: none;
-      color: #1f2937;
-      font-weight: 600;
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e5e7eb;
+      font-weight: 700;
+      letter-spacing: 0.02em;
     }
 
-    nav a:hover {
-      color: #2563eb;
+    .nav-left span.logo-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: conic-gradient(from 180deg, #ff9933, #ffffff, #138808, #2563eb, #ff9933);
+      box-shadow: 0 0 10px rgba(59,130,246,0.7);
     }
+
+    .nav-left span.brand {
+      background: linear-gradient(120deg, #e5e7eb, #93c5fd);
+      -webkit-background-clip: text;
+      color: transparent;
+      font-size: 16px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-right a {
+      color: #e5e7eb;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 4px;
+      border-radius: 999px;
+      transition: background 0.15s, transform 0.15s, color 0.15s;
+    }
+
+    .nav-right a:hover {
+      background: rgba(148,163,184,0.3);
+      transform: translateY(-1px);
+      color: #ffffff;
+    }
+
+    .nav-right a.youtube { color: #f97373; }
+    .nav-right a.instagram { color: #f973cf; }
+    .nav-right a.whatsapp { color: #4ade80; }
 
     .page-wrap {
-      min-height: calc(100vh - 50px);
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 32px 16px;
+      padding: 32px 16px 16px;
     }
 
     .container {
@@ -242,21 +289,45 @@
       box-shadow: 0 10px 25px rgba(15,23,42,0.25);
     }
 
-    .footer-note {
-      margin-top: 12px;
-      font-size: 11px;
-      color: #6b7280;
+    footer {
+      padding: 8px 16px 14px;
       text-align: center;
+      font-size: 11px;
+      color: #e5e7eb;
+      background: #020617f0;
+      border-top: 1px solid #020617;
+    }
+
+    footer a {
+      color: #9ca3af;
+      text-decoration: none;
+      margin: 0 6px;
+      font-size: 11px;
+    }
+
+    footer a:hover {
+      color: #e5e7eb;
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
-  <a href="privacy.html">Privacy Policy</a>
+  <div class="nav-left">
+    <span class="logo-dot"></span>
+    <span class="brand">ShortSetu</span>
+  </div>
+  <div class="nav-right">
+    <a href="https://www.youtube.com" target="_blank" class="youtube" aria-label="YouTube">
+      <i class="fab fa-youtube"></i>
+    </a>
+    <a href="https://www.instagram.com" target="_blank" class="instagram" aria-label="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://wa.me" target="_blank" class="whatsapp" aria-label="WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+  </div>
 </nav>
 
 <div class="page-wrap">
@@ -317,7 +388,13 @@
   </div>
 </div>
 
-<!-- QRCode.js library -->
+<footer>
+  <span>© ShortSetu</span> ·
+  <a href="#">About</a> ·
+  <a href="#">Contact</a> ·
+  <a href="#">Privacy</a>
+</footer>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
