@@ -1,116 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ShortSetu – TinyURL + QR</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 10px;
-    }
-    h1 {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-    label {
-      font-weight: bold;
-    }
-    input, button {
-      padding: 8px;
-      font-size: 14px;
-    }
-    input {
-      width: 100%;
-      box-sizing: border-box;
-      margin-top: 5px;
-    }
-    button {
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    #result {
-      margin-top: 20px;
-      border-top: 1px solid #ddd;
-      padding-top: 15px;
-      display: none;
-    }
-    #shortLink {
-      word-break: break-all;
-      color: #0066cc;
-      text-decoration: none;
-    }
-    #shortLink:hover {
-      text-decoration: underline;
-    }
-  </style>
-  <!-- QRCode JS library (CDN) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-</head>
-<body>
-  <h1>ShortSetu – URL Shortener (TinyURL) + QR</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShortSetu – Fast URL Shortener & QR Generator</title>
 
-  <label for="longUrl">Paste your long URL:</label><br>
-  <input
-    type="text"
-    id="longUrl"
-    placeholder="https://example.com/very/long/link">
-
-  <button onclick="shortenUrl()">Shorten & Generate QR</button>
-
-  <div id="result">
-    <p><strong>Short URL:</strong>
-      <a id="shortLink" href="#" target="_blank"></a>
-    </p>
-    <div id="qrcode"></div>
-  </div>
-
-  <script>
-    async function shortenUrl() {
-      const longUrlInput = document.getElementById('longUrl');
-      const longUrl = longUrlInput.value.trim();
-
-      if (!longUrl) {
-        alert('Please enter a URL');
-        return;
-      }
-
-      try {
-        // Yahi line main cheez hai – bina API key ke TinyURL use ho raha hai
-        const apiUrl = 'https://tinyurl.com/api-create.php?url=' +
-                       encodeURIComponent(longUrl);
-
-        const response = await fetch(apiUrl);
-        const shortUrl = await response.text(); // TinyURL plain text return karta hai
-
-        if (!shortUrl || !shortUrl.startsWith('http')) {
-          throw new Error('Invalid response from TinyURL');
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f7f7f7;
         }
 
-        // Short URL show karo
-        const linkEl = document.getElementById('shortLink');
-        linkEl.href = shortUrl;
-        linkEl.textContent = shortUrl;
+        nav {
+            background: #ffffff;
+            padding: 12px 20px;
+            display: flex;
+            gap: 20px;
+            font-size: 16px;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+        }
 
-        // QR generate karo
-        const qrDiv = document.getElementById('qrcode');
-        qrDiv.innerHTML = ''; // purana QR clear
+        nav a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
 
-        new QRCode(qrDiv, {
-          text: shortUrl,
-          width: 180,
-          height: 180
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #ccc;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: black;
+            color: white;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .output {
+            margin-top: 20px;
+        }
+
+        .qr-box {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Privacy Policy</a>
+</nav>
+
+<div class="container">
+    <h2>ShortSetu – URL Shortener + QR Generator</h2>
+
+    <input type="text" id="longUrl" placeholder="Enter your long URL here...">
+    <button onclick="generate()">Generate Short Link + QR</button>
+
+    <div class="output">
+        <p id="shortLink"></p>
+        <div class="qr-box">
+            anvas id="qrCanvas"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+
+<script>
+async function generate() {
+    let longUrl = document.getElementById("longUrl").value.trim();
+    if (!longUrl) {
+        alert("Please enter a URL!");
+        return;
+    }
+
+    try {
+        // TinyURL ka public API (no API key needed)
+        const apiUrl = "https://tinyurl.com/api-create.php?url=" + encodeURIComponent(longUrl);
+        const res = await fetch(apiUrl);
+        const tinyShortUrl = await res.text();
+
+        if (!tinyShortUrl || !tinyShortUrl.startsWith("http")) {
+            throw new Error("TinyURL error");
+        }
+
+        // Short URL show karo (click karne par original long URL open hoga)
+        document.getElementById("shortLink").innerHTML =
+            "Short URL: <a href='" + longUrl + "' target='_blank'>" + tinyShortUrl + "</a>";
+
+        // QR Code generate (TinyURL wale short link ka)
+        new QRious({
+            element: document.getElementById("qrCanvas"),
+            value: tinyShortUrl,
+            size: 200
         });
 
-        // Result section visible karo
-        document.getElementById('result').style.display = 'block';
-
-      } catch (err) {
-        console.error(err);
-        alert('TinyURL se link short karne me error aaya. Thodi der baad try karo.');
-      }
+    } catch (e) {
+        console.error(e);
+        alert("TinyURL se short link banane me problem aayi. Thodi der baad try karo.");
     }
-  </script>
+}
+</script>
+
 </body>
 </html>
