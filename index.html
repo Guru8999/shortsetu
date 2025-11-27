@@ -7,8 +7,10 @@
 
   <style>
     :root {
-      --primary: #111827;
+      --primary: #0f172a;
       --accent: #2563eb;
+      --accent2: #ec4899;
+      --accent3: #22c55e;
     }
 
     * { box-sizing: border-box; }
@@ -17,15 +19,17 @@
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       min-height: 100vh;
-      /* India flag inspired gradient */
       background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.25), transparent 55%),
-        radial-gradient(circle at bottom right, rgba(15,23,42,0.35), transparent 55%),
+        radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(15,23,42,0.4), transparent 55%),
         linear-gradient(
-          to bottom,
-          #ff9933 0%,   /* kesariya */
-          #ffffff 33%,  /* white */
-          #138808 100%  /* green */
+          135deg,
+          #ff9933 0%,
+          #ffd18a 18%,
+          #ffffff 40%,
+          #b3e6ff 60%,
+          #66c27a 82%,
+          #138808 100%
         );
       background-attachment: fixed;
       color: #111827;
@@ -65,13 +69,14 @@
     .container {
       width: 100%;
       max-width: 640px;
-      background: rgba(255,255,255,0.97);
+      background: rgba(255,255,255,0.96);
       padding: 28px 24px 24px;
-      border-radius: 18px;
+      border-radius: 22px;
       box-shadow:
-        0 22px 55px rgba(15,23,42,0.35),
-        0 0 0 1px rgba(255,255,255,0.6);
-      backdrop-filter: blur(4px);
+        0 24px 60px rgba(15,23,42,0.45),
+        0 0 0 1px rgba(255,255,255,0.7);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(148,163,184,0.25);
     }
 
     .title {
@@ -79,7 +84,9 @@
       font-weight: 800;
       margin: 0 0 4px;
       text-align: center;
-      color: var(--primary);
+      background: linear-gradient(120deg, #111827, #2563eb, #ec4899);
+      -webkit-background-clip: text;
+      color: transparent;
     }
 
     .subtitle {
@@ -93,7 +100,7 @@
       display: flex;
       justify-content: center;
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
     }
 
@@ -101,9 +108,24 @@
       font-size: 11px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: #e0f2fe;
-      color: #1d4ed8;
-      border: 1px solid #bfdbfe;
+      border: 1px solid transparent;
+      color: #0f172a;
+      background: #e5e7eb;
+    }
+    .badge.india {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #c2410c;
+    }
+    .badge.qr {
+      background: #ecfeff;
+      border-color: #22d3ee;
+      color: #0e7490;
+    }
+    .badge.tiny {
+      background: #eef2ff;
+      border-color: #a5b4fc;
+      color: #3730a3;
     }
 
     .label {
@@ -116,7 +138,7 @@
     input {
       width: 100%;
       padding: 11px 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid #d1d5db;
       font-size: 14px;
       outline: none;
@@ -125,8 +147,8 @@
     }
 
     input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(37,99,235,0.35);
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 1px rgba(236,72,153,0.38);
       background: #ffffff;
     }
 
@@ -134,9 +156,10 @@
       width: 100%;
       margin-top: 10px;
       padding: 11px 12px;
-      border-radius: 10px;
+      border-radius: 999px;
       border: none;
-      background: linear-gradient(135deg, #111827, #1f2937);
+      background: linear-gradient(135deg, #2563eb, #ec4899, #22c55e);
+      background-size: 200% 200%;
       color: #ffffff;
       font-size: 15px;
       font-weight: 600;
@@ -145,9 +168,14 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
+      animation: gradientMove 6s ease infinite;
     }
 
-    .primary-btn:hover { filter: brightness(1.06); }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
     .primary-btn span.icon { font-size: 16px; }
 
@@ -164,7 +192,7 @@
     }
 
     #shortLink a {
-      color: var(--accent);
+      color: #1d4ed8;
       font-weight: 600;
       word-break: break-all;
     }
@@ -186,18 +214,18 @@
     }
 
     .copy-btn {
-      background: #e5e7eb;
-      color: #111827;
+      background: #fee2e2;
+      color: #b91c1c;
     }
 
-    .copy-btn:hover { background: #d1d5db; }
+    .copy-btn:hover { background: #fecaca; }
 
     .download-btn {
-      background: #2563eb;
-      color: white;
+      background: #dcfce7;
+      color: #166534;
     }
 
-    .download-btn:hover { background: #1d4ed8; }
+    .download-btn:hover { background: #bbf7d0; }
 
     .qr-box {
       text-align: center;
@@ -205,9 +233,10 @@
     }
 
     #qrCanvas {
-      border-radius: 12px;
-      padding: 6px;
-      background: #f3f4f6;
+      border-radius: 16px;
+      padding: 8px;
+      background: radial-gradient(circle at top, #eff6ff, #e5e7eb);
+      box-shadow: 0 10px 25px rgba(15,23,42,0.25);
     }
 
     .footer-note {
@@ -230,12 +259,12 @@
 <div class="page-wrap">
   <div class="container">
     <h1 class="title">ShortSetu – URL Shortener (TinyURL) + QR</h1>
-    <p class="subtitle">Bharat-made smart tool: paste your long link, get a TinyURL short link and QR code for instant sharing.</p>
+    <p class="subtitle">Bharat-made smart tool: paste your long link, get a TinyURL short link and colourful QR code for instant sharing.</p>
 
     <div class="badge-row">
-      <span class="badge">🇮🇳 Made for India</span>
-      <span class="badge">TinyURL Powered</span>
-      <span class="badge">QR Download</span>
+      <span class="badge india">🇮🇳 Desi Utility</span>
+      <span class="badge tiny">TinyURL Powered</span>
+      <span class="badge qr">QR Download Ready</span>
     </div>
 
     <div class="form">
@@ -259,7 +288,7 @@
         anvas id="qrCanvas"></canvas>
       </div>
 
-      <p class="footer-note">Prototype · Phase 1 – Full analytics, login & payment backend me add honge.</p>
+      <p class="footer-note">Prototype · Phase 1 – Backend me analytics, login & payments add honge.</p>
     </div>
   </div>
 </div>
