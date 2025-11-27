@@ -6,82 +6,33 @@
   <title>ShortSetu – Fast URL Shortener & QR Generator</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f7f7f7;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
     nav {
-      background: #ffffff;
-      padding: 12px 20px;
-      display: flex;
-      gap: 20px;
-      font-size: 16px;
-      border-bottom: 1px solid #ddd;
-      position: sticky;
-      top: 0;
+      background: #ffffff; padding: 12px 20px; display: flex; gap: 20px;
+      font-size: 16px; border-bottom: 1px solid #ddd; position: sticky; top: 0;
     }
-    nav a {
-      text-decoration: none;
-      color: black;
-      font-weight: bold;
-    }
+    nav a { text-decoration: none; color: black; font-weight: bold; }
     .container {
-      max-width: 500px;
-      margin: 40px auto;
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
+      max-width: 500px; margin: 40px auto; background: white; padding: 25px;
+      border-radius: 10px; box-shadow: 0 0 10px #ccc;
     }
     input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ccc;
       margin-bottom: 15px;
     }
     button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      background: black;
-      color: white;
-      font-size: 16px;
-      border-radius: 6px;
-      cursor: pointer;
+      width: 100%; padding: 12px; border: none; background: black; color: white;
+      font-size: 16px; border-radius: 6px; cursor: pointer;
     }
-    .output {
-      margin-top: 20px;
-      display: none;
-    }
-    .qr-box {
-      text-align: center;
-      margin-top: 15px;
-    }
-    #shortLink a {
-      color: #0066cc;
-      word-break: break-all;
-    }
-    .action-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
+    .output { margin-top: 20px; display: none; }
+    .qr-box { text-align: center; margin-top: 15px; }
+    #shortLink a { color: #0066cc; word-break: break-all; }
+    .action-buttons { display: flex; gap: 10px; margin-top: 10px; }
     .action-buttons button {
-      flex: 1;
-      padding: 10px;
-      background: #0066cc;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
+      flex: 1; padding: 10px; background: #0066cc; color: white;
+      border: none; border-radius: 6px; cursor: pointer; font-size: 14px;
     }
-    .action-buttons button:hover {
-      background: #0052a3;
-    }
+    .action-buttons button:hover { background: #0052a3; }
   </style>
 </head>
 <body>
@@ -103,21 +54,22 @@
     <p id="shortLink"></p>
 
     <div class="action-buttons">
-      <button onclick="copyLink()">Copy Link</button>
-      <button onclick="downloadQR()">Download QR</button>
+      <button type="button" onclick="copyLink()">Copy Link</button>
+      <button type="button" onclick="downloadQR()">Download QR</button>
     </div>
 
     <div class="qr-box">
-      <div id="qrcode"></div>
+      nvas idd="qrCanvas"></canvas>
     </div>
   </div>
 </div>
 
-<!-- QRCode.js library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- QRious library (QR -> canvas) -->
+<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
 
 <script>
   let currentShortUrl = "";
+  let qr; // QRious instance
 
   async function generate() {
     const input = document.getElementById("longUrl");
@@ -142,12 +94,12 @@
       document.getElementById("shortLink").innerHTML =
         "Short URL: <a href='" + tinyUrl + "' target='_blank'>" + tinyUrl + "</a>";
 
-      const qrDiv = document.getElementById("qrcode");
-      qrDiv.innerHTML = "";
-      new QRCode(qrDiv, {
-        text: tinyUrl,
-        width: 200,
-        height: 200
+      // Create / update QR on canvas
+      const canvas = document.getElementById("qrCanvas");
+      qr = new QRious({
+        element: canvas,
+        value: tinyUrl,
+        size: 200
       });
 
       document.getElementById("outputSection").style.display = "block";
@@ -162,26 +114,18 @@
       alert("Pehle short link generate karo!");
       return;
     }
-
     navigator.clipboard.writeText(currentShortUrl)
       .then(() => alert("Link copied: " + currentShortUrl))
       .catch(() => alert("Copy nahi ho paya, manually copy karo."));
   }
 
   function downloadQR() {
-    const img = document.querySelector("#qrcode img");
-    const canvas = document.querySelector("#qrcode canvas");
-
-    let dataUrl = "";
-    if (canvas) {
-      dataUrl = canvas.toDataURL("image/png");
-    } else if (img) {
-      dataUrl = img.src;
-    } else {
+    const canvas = document.getElementById("qrCanvas");
+    if (!canvas) {
       alert("QR code nahi mila!");
       return;
     }
-
+    const dataUrl = canvas.toDataURL("image/png");
     const a = document.createElement("a");
     a.href = dataUrl;
     a.download = "shortsetu-qr.png";
