@@ -9,62 +9,83 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding-top: 70px; /* Navbar height ke liye padding */
             background: #f7f7f7;
         }
 
         nav {
             background: #ffffff;
-            padding: 12px 20px;
+            padding: 15px 30px;
             display: flex;
-            gap: 20px;
+            gap: 25px;
             font-size: 16px;
             border-bottom: 1px solid #ddd;
-            position: sticky;
+            position: fixed; /* Fixed navbar */
             top: 0;
+            width: 100%;
+            z-index: 999;
         }
 
         nav a {
             text-decoration: none;
             color: black;
             font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #1a73e8;
         }
 
         .container {
-            max-width: 500px;
-            margin: 40px auto;
+            max-width: 550px;
+            margin: 30px auto;
             background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px #ccc;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 12px #ccc;
         }
 
         input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border-radius: 6px;
             border: 1px solid #ccc;
             margin-bottom: 15px;
+            font-size: 16px;
         }
 
         button {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            background: black;
+            background: #1a73e8;
             color: white;
             font-size: 16px;
             border-radius: 6px;
             cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0b5fcc;
         }
 
         .output {
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .qr-box {
             text-align: center;
             margin-top: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+            color: #555;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -91,6 +112,10 @@
         </div>
     </div>
 </div>
+
+<footer>
+    © 2025 ShortSetu | Free Tool by Ghanshyam
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
 
