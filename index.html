@@ -1,31 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ShortSetu • Smart Link & QR Platform</title>
 
   <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #2563eb;
+      --accent2: #ec4899;
+      --accent3: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f3f4f6;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(15,23,42,0.4), transparent 55%),
+        linear-gradient(
+          135deg,
+          #ff9933 0%,
+          #ffd18a 18%,
+          #ffffff 40%,
+          #b3e6ff 60%,
+          #66c27a 82%,
+          #138808 100%
+        );
+      background-attachment: fixed;
+      color: #111827;
     }
 
     nav {
-      background: #ffffff;
-      padding: 12px 20px;
+      background: #ffffffcc;
+      backdrop-filter: blur(6px);
+      padding: 12px 24px;
       display: flex;
       gap: 20px;
       font-size: 15px;
       border-bottom: 1px solid #e5e7eb;
       position: sticky;
       top: 0;
+      z-index: 10;
     }
 
     nav a {
       text-decoration: none;
-      color: #111827;
+      color: #1f2937;
       font-weight: 600;
     }
 
@@ -43,54 +68,182 @@
 
     .container {
       width: 100%;
-      max-width: 600px;
-      background: #ffffff;
-      padding: 24px 20px;
-      border-radius: 14px;
-      box-shadow: 0 10px 25px rgba(15,23,42,0.12);
+      max-width: 640px;
+      background: rgba(255,255,255,0.96);
+      padding: 28px 24px 24px;
+      border-radius: 22px;
+      box-shadow:
+        0 24px 60px rgba(15,23,42,0.45),
+        0 0 0 1px rgba(255,255,255,0.7);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(148,163,184,0.25);
     }
 
-    h2 {
-      margin-top: 0;
+    .title {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 4px;
       text-align: center;
-      font-size: 20px;
+      background: linear-gradient(120deg, #111827, #2563eb, #ec4899);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      text-align: center;
+      color: #4b5563;
+      margin-bottom: 18px;
+    }
+
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      color: #0f172a;
+      background: #e5e7eb;
+    }
+    .badge.india {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #c2410c;
+    }
+    .badge.qr {
+      background: #ecfeff;
+      border-color: #22d3ee;
+      color: #0e7490;
+    }
+    .badge.tiny {
+      background: #eef2ff;
+      border-color: #a5b4fc;
+      color: #3730a3;
+    }
+
+    .label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 6px;
     }
 
     input {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
+      padding: 11px 12px;
+      border-radius: 12px;
       border: 1px solid #d1d5db;
-      margin-bottom: 12px;
       font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      background: #f9fafb;
     }
 
-    button {
+    input:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 1px rgba(236,72,153,0.38);
+      background: #ffffff;
+    }
+
+    .primary-btn {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
+      margin-top: 10px;
+      padding: 11px 12px;
+      border-radius: 999px;
       border: none;
-      background: #111827;
+      background: linear-gradient(135deg, #2563eb, #ec4899, #22c55e);
+      background-size: 200% 200%;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      animation: gradientMove 6s ease infinite;
     }
 
-    button:hover {
-      background: #0f172a;
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
+
+    .primary-btn span.icon { font-size: 16px; }
 
     .output {
-      margin-top: 16px;
+      margin-top: 20px;
+      display: none;
+      border-top: 1px dashed #e5e7eb;
+      padding-top: 16px;
+    }
+
+    #shortLink {
+      font-size: 13px;
+      color: #4b5563;
     }
 
     #shortLink a {
-      color: #2563eb;
+      color: #1d4ed8;
+      font-weight: 600;
       word-break: break-all;
     }
 
-    .qr-box {
+    .action-buttons {
+      display: flex;
+      gap: 10px;
       margin-top: 12px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+      padding: 9px 10px;
+      border-radius: 999px;
+      border: none;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .copy-btn {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .copy-btn:hover { background: #fecaca; }
+
+    .download-btn {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .download-btn:hover { background: #bbf7d0; }
+
+    .qr-box {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    #qrcode {
+      display: inline-block;
+      padding: 8px;
+      background: radial-gradient(circle at top, #eff6ff, #e5e7eb);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(15,23,42,0.25);
+    }
+
+    .footer-note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #6b7280;
       text-align: center;
     }
   </style>
@@ -106,54 +259,111 @@
 
 <div class="page-wrap">
   <div class="container">
-    <h2>ShortSetu – URL Shortener (TinyURL) + QR</h2>
+    <h1 class="title">ShortSetu • Smart Link & QR Platform</h1>
+    <p class="subtitle">
+      ShortSetu is your desi link hub – turn long URLs into clean TinyURL links with QR codes ready for sharing.
+    </p>
 
-    <input type="text" id="longUrl" placeholder="https://example.com/your/long/link">
-    <button onclick="generate()">Shorten & Generate QR</button>
+    <div class="badge-row">
+      <span class="badge india">🇮🇳 ShortSetu · Made in India</span>
+      <span class="badge tiny">Powered by TinyURL Engine</span>
+      <span class="badge qr">One‑Tap QR & Download</span>
+    </div>
 
-    <div class="output">
+    <div class="form">
+      <div class="label">Long URL</div>
+      <input type="text" id="longUrl" placeholder="https://example.com/your/long/link" />
+      <button class="primary-btn" onclick="generate()">
+        <span class="icon">⚡</span>
+        <span>Shorten & Generate QR</span>
+      </button>
+    </div>
+
+    <div class="output" id="outputSection">
       <p id="shortLink"></p>
-      <div class="qr-box">
-        anvas id="qrCanvas"></canvas>
+
+      <div class="action-buttons">
+        <button type="button" class="copy-btn" onclick="copyLink()">Copy Link</button>
+        <button type="button" class="download-btn" onclick="downloadQR()">Download QR</button>
       </div>
+
+      <div class="qr-box">
+        <div id="qrcode"></div>
+      </div>
+
+      <p class="footer-note">
+        © ShortSetu · Phase 1 public prototype. Full ShortSetu Suite will include analytics, login & payments.
+      </p>
     </div>
   </div>
 </div>
 
-<!-- QR library -->
-<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+<!-- QRCode.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
-async function generate() {
-  const longUrl = document.getElementById("longUrl").value.trim();
-  if (!longUrl) {
-    alert("URL daalo");
-    return;
-  }
+  let currentShortUrl = "";
 
-  try {
-    const res = await fetch(
-      "https://tinyurl.com/api-create.php?url=" + encodeURIComponent(longUrl)
-    );
-    const tinyUrl = await res.text();
+  async function generate() {
+    const input = document.getElementById("longUrl");
+    const longUrl = input.value.trim();
 
-    if (!tinyUrl || !tinyUrl.startsWith("http")) {
-      throw new Error("TinyURL error");
+    if (!longUrl) {
+      alert("Please enter a URL!");
+      return;
     }
 
-    document.getElementById("shortLink").innerHTML =
-      "Short URL: <a href='" + tinyUrl + "' target='_blank'>" + tinyUrl + "</a>";
+    try {
+      const apiUrl = "https://tinyurl.com/api-create.php?url=" + encodeURIComponent(longUrl);
+      const res = await fetch(apiUrl);
+      const tinyUrl = await res.text();
 
-    new QRious({
-      element: document.getElementById("qrCanvas"),
-      value: tinyUrl,
-      size: 200
-    });
-  } catch (e) {
-    console.error(e);
-    alert("TinyURL se short link nahi bana, thodi der baad try karo.");
+      if (!tinyUrl || !tinyUrl.startsWith("http")) {
+        throw new Error("TinyURL error");
+      }
+
+      currentShortUrl = tinyUrl;
+
+      document.getElementById("shortLink").innerHTML =
+        "Short URL: <a href='" + tinyUrl + "' target='_blank'>" + tinyUrl + "</a>";
+
+      const qrDiv = document.getElementById("qrcode");
+      qrDiv.innerHTML = "";
+      new QRCode(qrDiv, {
+        text: tinyUrl,
+        width: 200,
+        height: 200
+      });
+
+      document.getElementById("outputSection").style.display = "block";
+    } catch (e) {
+      console.error(e);
+      alert("TinyURL se short link nahi bana, thodi der baad try karo.");
+    }
   }
-}
+
+  function copyLink() {
+    if (!currentShortUrl) {
+      alert("Pehle short link generate karo!");
+      return;
+    }
+    navigator.clipboard.writeText(currentShortUrl)
+      .then(() => alert("Link copied: " + currentShortUrl))
+      .catch(() => alert("Copy nahi ho paya, manually copy karo."));
+  }
+
+  function downloadQR() {
+    const canvas = document.querySelector("#qrcode canvas");
+    if (!canvas) {
+      alert("QR code nahi mila!");
+      return;
+    }
+    const dataUrl = canvas.toDataURL("image/png");
+    const a = document.createElement("a");
+    a.href = dataUrl;
+    a.download = "shortsetu-qr.png";
+    a.click();
+  }
 </script>
 
 </body>
