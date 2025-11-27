@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ShortSetu • Smart Link & QR Platform</title>
 
-  <!-- Font Awesome icons -->
+  <!-- Icons CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 
   <style>
@@ -65,7 +65,7 @@
       letter-spacing: 0.02em;
     }
 
-    .nav-left span.logo-dot {
+    .logo-dot {
       width: 20px;
       height: 20px;
       border-radius: 999px;
@@ -73,37 +73,49 @@
       box-shadow: 0 0 10px rgba(59,130,246,0.7);
     }
 
-    .nav-left span.brand {
+    .brand {
       background: linear-gradient(120deg, #e5e7eb, #93c5fd);
       -webkit-background-clip: text;
       color: transparent;
       font-size: 16px;
     }
 
-    .nav-right {
+    .nav-tabs {
       display: flex;
       align-items: center;
-      gap: 12px;
-    }
-
-    .nav-right a {
-      color: #e5e7eb;
-      text-decoration: none;
-      font-size: 16px;
+      gap: 8px;
+      background: rgba(15,23,42,0.8);
       padding: 4px;
       border-radius: 999px;
-      transition: background 0.15s, transform 0.15s, color 0.15s;
+      border: 1px solid rgba(148,163,184,0.5);
     }
 
-    .nav-right a:hover {
-      background: rgba(148,163,184,0.3);
+    .nav-tab {
+      border: none;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #cbd5f5;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+    }
+
+    .nav-tab i { font-size: 13px; }
+
+    .nav-tab:hover {
+      background: rgba(148,163,184,0.25);
       transform: translateY(-1px);
-      color: #ffffff;
     }
 
-    .nav-right a.youtube { color: #f97373; }
-    .nav-right a.instagram { color: #f973cf; }
-    .nav-right a.whatsapp { color: #4ade80; }
+    .nav-tab.active {
+      background: linear-gradient(135deg, #2563eb, #ec4899);
+      color: #ffffff;
+      box-shadow: 0 0 0 1px rgba(148,163,184,0.4);
+    }
 
     .page-wrap {
       flex: 1;
@@ -115,7 +127,7 @@
 
     .container {
       width: 100%;
-      max-width: 640px;
+      max-width: 680px;
       background: rgba(255,255,255,0.96);
       padding: 28px 24px 24px;
       border-radius: 22px;
@@ -158,7 +170,6 @@
       border: 1px solid transparent;
       color: #0f172a;
       background: #e5e7eb;
-      cursor: pointer;
       user-select: none;
     }
     .badge.india {
@@ -175,6 +186,41 @@
       background: #eef2ff;
       border-color: #a5b4fc;
       color: #3730a3;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      margin-top: 6px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-title span.icon {
+      font-size: 16px;
+    }
+
+    .section-pill {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
+    }
+
+    .section-tip {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 8px;
     }
 
     .label {
@@ -250,6 +296,7 @@
       display: flex;
       gap: 10px;
       margin-top: 12px;
+      flex-wrap: wrap;
     }
 
     .action-buttons button {
@@ -289,6 +336,13 @@
       box-shadow: 0 10px 25px rgba(15,23,42,0.25);
     }
 
+    .footer-note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #6b7280;
+      text-align: center;
+    }
+
     footer {
       padding: 8px 16px 14px;
       text-align: center;
@@ -308,6 +362,13 @@
     footer a:hover {
       color: #e5e7eb;
     }
+
+    .platform-section {
+      display: none;
+    }
+    .platform-section.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -317,16 +378,19 @@
     <span class="logo-dot"></span>
     <span class="brand">ShortSetu</span>
   </div>
-  <div class="nav-right">
-    <a href="https://www.youtube.com" target="_blank" class="youtube" aria-label="YouTube">
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tab-yt" onclick="switchPlatform('yt')">
       <i class="fab fa-youtube"></i>
-    </a>
-    <a href="https://www.instagram.com" target="_blank" class="instagram" aria-label="Instagram">
+      <span>YouTube</span>
+    </button>
+    <button class="nav-tab" id="tab-insta" onclick="switchPlatform('insta')">
       <i class="fab fa-instagram"></i>
-    </a>
-    <a href="https://wa.me" target="_blank" class="whatsapp" aria-label="WhatsApp">
+      <span>Instagram</span>
+    </button>
+    <button class="nav-tab" id="tab-wa" onclick="switchPlatform('wa')">
       <i class="fab fa-whatsapp"></i>
-    </a>
+      <span>WhatsApp</span>
+    </button>
   </div>
 </nav>
 
@@ -338,20 +402,55 @@
     </p>
 
     <div class="badge-row">
-      <span class="badge india" onclick="setPreset('yt')">🎬 YouTube Link</span>
-      <span class="badge tiny" onclick="setPreset('insta')">📸 Instagram</span>
-      <span class="badge qr" onclick="setPreset('wa')">💬 WhatsApp</span>
-    </div>
-
-    <div class="badge-row" style="margin-top:-6px;">
       <span class="badge india">🇮🇳 ShortSetu · Made in India</span>
       <span class="badge tiny">Powered by TinyURL Engine</span>
       <span class="badge qr">One‑Tap QR & Download</span>
     </div>
 
+    <!-- PLATFORM SECTIONS -->
+    <div id="section-yt" class="platform-section active">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="icon">🎬</span>
+          <span>YouTube Links</span>
+        </div>
+        <span class="section-pill">Videos • Shorts • Live</span>
+      </div>
+      <p class="section-tip">
+        YouTube video, Shorts ya livestream ka link paste karo. ShortSetu clean TinyURL + QR ready karega.
+      </p>
+    </div>
+
+    <div id="section-insta" class="platform-section">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="icon">📸</span>
+          <span>Instagram Links</span>
+        </div>
+        <span class="section-pill">Profile • Reels • Bio</span>
+      </div>
+      <p class="section-tip">
+        Profile, Reel ya Story/bio ke liye Instagram link paste karo. Use in DMs, bio ya swipe‑ups.
+      </p>
+    </div>
+
+    <div id="section-wa" class="platform-section">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="icon">💬</span>
+          <span>WhatsApp Links</span>
+        </div>
+        <span class="section-pill">Chats • Groups • Broadcast</span>
+      </div>
+      <p class="section-tip">
+        wa.me link ya group invite paste karo, ya normal site link jise WhatsApp pe share karna hai.
+      </p>
+    </div>
+
+    <!-- COMMON FORM -->
     <div class="form">
       <div class="label">Long URL</div>
-      <input type="text" id="longUrl" placeholder="https://example.com/your/long/link" />
+      <input type="text" id="longUrl" placeholder="https://www.youtube.com/watch?v=..." />
 
       <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563;margin-top:6px;">
         <input type="checkbox" id="cleanUtm" style="width:14px;height:14px;">
@@ -395,18 +494,35 @@
   <a href="#">Privacy</a>
 </footer>
 
+<!-- QRCode.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
   let currentShortUrl = "";
+  let currentPlatform = "yt";
 
-  function setPreset(type) {
+  function switchPlatform(platform) {
+    currentPlatform = platform;
+
+    // Tabs
+    document.getElementById("tab-yt").classList.remove("active");
+    document.getElementById("tab-insta").classList.remove("active");
+    document.getElementById("tab-wa").classList.remove("active");
+    document.getElementById("tab-" + platform).classList.add("active");
+
+    // Sections
+    document.getElementById("section-yt").classList.remove("active");
+    document.getElementById("section-insta").classList.remove("active");
+    document.getElementById("section-wa").classList.remove("active");
+    document.getElementById("section-" + platform).classList.add("active");
+
+    // Placeholder change
     const input = document.getElementById("longUrl");
-    if (type === "yt") {
+    if (platform === "yt") {
       input.placeholder = "https://www.youtube.com/watch?v=...";
-    } else if (type === "insta") {
+    } else if (platform === "insta") {
       input.placeholder = "https://www.instagram.com/username/...";
-    } else if (type === "wa") {
+    } else if (platform === "wa") {
       input.placeholder = "https://wa.me/91XXXXXXXXXX?text=Hi...";
     }
     input.focus();
