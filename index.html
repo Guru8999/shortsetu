@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ShortSetu – Fast URL Shortener & QR Generator</title>
+  <title>ShortSetu • Smart Link & QR Platform</title>
 
   <style>
     :root {
@@ -258,13 +258,15 @@
 
 <div class="page-wrap">
   <div class="container">
-    <h1 class="title">ShortSetu – URL Shortener (TinyURL) + QR</h1>
-    <p class="subtitle">Bharat-made smart tool: paste your long link, get a TinyURL short link and colourful QR code for instant sharing.</p>
+    <h1 class="title">ShortSetu • Smart Link & QR Platform</h1>
+    <p class="subtitle">
+      ShortSetu is your desi link hub – turn long URLs into clean TinyURL links with QR codes ready for sharing.
+    </p>
 
     <div class="badge-row">
-      <span class="badge india">🇮🇳 Desi Utility</span>
-      <span class="badge tiny">TinyURL Powered</span>
-      <span class="badge qr">QR Download Ready</span>
+      <span class="badge india">🇮🇳 ShortSetu · Made in India</span>
+      <span class="badge tiny">Powered by TinyURL Engine</span>
+      <span class="badge qr">One‑Tap QR & Download</span>
     </div>
 
     <div class="form">
@@ -288,7 +290,9 @@
         anvas id="qrCanvas"></canvas>
       </div>
 
-      <p class="footer-note">Prototype · Phase 1 – Backend me analytics, login & payments add honge.</p>
+      <p class="footer-note">
+        ShortSetu Phase 1 · Public prototype. Full ShortSetu Suite will include analytics, login & payments.
+      </p>
     </div>
   </div>
 </div>
@@ -343,7 +347,7 @@
     }
     navigator.clipboard.writeText(currentShortUrl)
       .then(() => alert("Link copied: " + currentShortUrl))
-      .catch(() => alert("Copy nahi ho paya, manually copy karo.");
+      .catch(() => alert("Copy nahi ho paya, manually copy karo."));
   }
 
   function downloadQR() {
