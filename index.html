@@ -111,6 +111,8 @@
       border: 1px solid transparent;
       color: #0f172a;
       background: #e5e7eb;
+      cursor: pointer;
+      user-select: none;
     }
     .badge.india {
       background: #fff7ed;
@@ -265,6 +267,12 @@
     </p>
 
     <div class="badge-row">
+      <span class="badge india" onclick="setPreset('yt')">🎬 YouTube Link</span>
+      <span class="badge tiny" onclick="setPreset('insta')">📸 Instagram</span>
+      <span class="badge qr" onclick="setPreset('wa')">💬 WhatsApp</span>
+    </div>
+
+    <div class="badge-row" style="margin-top:-6px;">
       <span class="badge india">🇮🇳 ShortSetu · Made in India</span>
       <span class="badge tiny">Powered by TinyURL Engine</span>
       <span class="badge qr">One‑Tap QR & Download</span>
@@ -273,6 +281,12 @@
     <div class="form">
       <div class="label">Long URL</div>
       <input type="text" id="longUrl" placeholder="https://example.com/your/long/link" />
+
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563;margin-top:6px;">
+        <input type="checkbox" id="cleanUtm" style="width:14px;height:14px;">
+        Remove tracking junk (UTM etc.) before shortening
+      </label>
+
       <button class="primary-btn" onclick="generate()">
         <span class="icon">⚡</span>
         <span>Shorten & Generate QR</span>
@@ -285,6 +299,11 @@
       <div class="action-buttons">
         <button type="button" class="copy-btn" onclick="copyLink()">Copy Link</button>
         <button type="button" class="download-btn" onclick="downloadQR()">Download QR</button>
+      </div>
+
+      <div class="action-buttons" style="margin-top:8px;">
+        <button type="button" class="copy-btn" onclick="shareWhatsApp()">Share on WhatsApp</button>
+        <button type="button" class="download-btn" onclick="copyInstaBio()">Copy Insta Bio Text</button>
       </div>
 
       <div class="qr-box">
@@ -304,13 +323,43 @@
 <script>
   let currentShortUrl = "";
 
+  function setPreset(type) {
+    const input = document.getElementById("longUrl");
+    if (type === "yt") {
+      input.placeholder = "https://www.youtube.com/watch?v=...";
+    } else if (type === "insta") {
+      input.placeholder = "https://www.instagram.com/username/...";
+    } else if (type === "wa") {
+      input.placeholder = "https://wa.me/91XXXXXXXXXX?text=Hi...";
+    }
+    input.focus();
+  }
+
+  function cleanUrl(url) {
+    try {
+      const u = new URL(url);
+      u.searchParams.delete("utm_source");
+      u.searchParams.delete("utm_medium");
+      u.searchParams.delete("utm_campaign");
+      u.searchParams.delete("utm_term");
+      u.searchParams.delete("utm_content");
+      return u.toString();
+    } catch (e) {
+      return url;
+    }
+  }
+
   async function generate() {
     const input = document.getElementById("longUrl");
-    const longUrl = input.value.trim();
+    let longUrl = input.value.trim();
 
     if (!longUrl) {
       alert("Please enter a URL!");
       return;
+    }
+
+    if (document.getElementById("cleanUtm").checked) {
+      longUrl = cleanUrl(longUrl);
     }
 
     try {
@@ -363,6 +412,26 @@
     a.href = dataUrl;
     a.download = "shortsetu-qr.png";
     a.click();
+  }
+
+  function shareWhatsApp() {
+    if (!currentShortUrl) {
+      alert("Pehle short link generate karo!");
+      return;
+    }
+    const text = encodeURIComponent("ShortSetu link: " + currentShortUrl);
+    window.open("https://wa.me/?text=" + text, "_blank");
+  }
+
+  function copyInstaBio() {
+    if (!currentShortUrl) {
+      alert("Pehle short link generate karo!");
+      return;
+    }
+    const bio = `ShortSetu link: ${currentShortUrl}`;
+    navigator.clipboard.writeText(bio)
+      .then(() => alert("Insta bio text copied!"))
+      .catch(() => alert("Copy nahi ho paya, manually copy karo."));
   }
 </script>
 
