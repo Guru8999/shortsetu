@@ -1,25 +1,109 @@
-async function shortenWithTinyApi(longUrl) {
-  const apiKey = 'YAHAN_APNA_API_KEY_DAL'; // TinyURL dev panel se
-  const apiUrl = 'https://api.tinyurl.com/create';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ShortSetu – TinyURL Shortener + QR</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      max-width: 600px; 
+      margin: 20px auto; 
+      padding: 10px;
+    }
+    h1 { font-size: 22px; margin-bottom: 10px; }
+    input, button { 
+      padding: 8px; 
+      font-size: 14px; 
+    }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+      display: none;
+    }
+    #shortLink {
+      word-break: break-all;
+      color: #0066cc;
+      text-decoration: none;
+    }
+    #shortLink:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <!-- QRCode JS library (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <h1>ShortSetu – URL Shortener (TinyURL) + QR</h1>
 
-  const res = await fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + apiKey,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify({
-      url: longUrl
-      // yaha extra options bhi ho sakte hain docs ke hisab se
-    })
-  });
+  <label for="longUrl">Paste your long URL:</label><br>
+  <input 
+    type="text" 
+    id="longUrl" 
+    placeholder="https://example.com/very/long/link">
+  
+  <button onclick="shortenUrl()">Shorten & Generate QR</button>
 
-  if (!res.ok) {
-    throw new Error('TinyURL API error: ' + res.status);
-  }
+  <div id="result">
+    <p><strong>Short URL:</strong> 
+      <a id="shortLink" href="#" target="_blank"></a>
+    </p>
+    <div id="qrcode"></div>
+  </div>
 
-  const data = await res.json();
-  // Docs ke hisab se field ka naam check karo (often data.tiny_url ya shortened_url)
-  return data.data.tiny_url;
-}
+  <script>
+    async function shortenUrl() {
+      const longUrlInput = document.getElementById('longUrl');
+      const longUrl = longUrlInput.value.trim();
+
+      if (!longUrl) {
+        alert('Please enter a URL');
+        return;
+      }
+
+      try {
+        // TinyURL ka simple API endpoint (no key)
+        const apiUrl = 'https://tinyurl.com/api-create.php?url=' 
+                        + encodeURIComponent(longUrl);
+
+        const response = await fetch(apiUrl);
+        const shortUrl = await response.text(); // plain text response
+
+        if (!shortUrl || !shortUrl.startsWith('http')) {
+          throw new Error('Invalid response from TinyURL');
+        }
+
+        // Short URL show karo
+        const linkEl = document.getElementById('shortLink');
+        linkEl.href = shortUrl;
+        linkEl.textContent = shortUrl;
+
+        // QR generate karo
+        const qrDiv = document.getElementById('qrcode');
+        qrDiv.innerHTML = ''; // purana QR clear
+
+        new QRCode(qrDiv, {
+          text: shortUrl,
+          width: 180,
+          height: 180
+        });
+
+        // Result section visible karo
+        document.getElementById('result').style.display = 'block';
+
+      } catch (err) {
+        console.error(err);
+        alert('TinyURL se link short karne me error aaya. Thodi der baad try karo.');
+      }
+    }
+  </script>
+</body>
+</html>
