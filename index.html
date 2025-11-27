@@ -2,22 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>ShortSetu – TinyURL Shortener + QR</title>
+  <title>ShortSetu – TinyURL + QR</title>
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      max-width: 600px; 
-      margin: 20px auto; 
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 20px auto;
       padding: 10px;
     }
-    h1 { font-size: 22px; margin-bottom: 10px; }
-    input, button { 
-      padding: 8px; 
-      font-size: 14px; 
+    h1 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, button {
+      padding: 8px;
+      font-size: 14px;
     }
     input {
       width: 100%;
       box-sizing: border-box;
+      margin-top: 5px;
     }
     button {
       margin-top: 10px;
@@ -45,15 +52,15 @@
   <h1>ShortSetu – URL Shortener (TinyURL) + QR</h1>
 
   <label for="longUrl">Paste your long URL:</label><br>
-  <input 
-    type="text" 
-    id="longUrl" 
+  <input
+    type="text"
+    id="longUrl"
     placeholder="https://example.com/very/long/link">
-  
+
   <button onclick="shortenUrl()">Shorten & Generate QR</button>
 
   <div id="result">
-    <p><strong>Short URL:</strong> 
+    <p><strong>Short URL:</strong>
       <a id="shortLink" href="#" target="_blank"></a>
     </p>
     <div id="qrcode"></div>
@@ -70,12 +77,12 @@
       }
 
       try {
-        // TinyURL ka simple API endpoint (no key)
-        const apiUrl = 'https://tinyurl.com/api-create.php?url=' 
-                        + encodeURIComponent(longUrl);
+        // Yahi line main cheez hai – bina API key ke TinyURL use ho raha hai
+        const apiUrl = 'https://tinyurl.com/api-create.php?url=' +
+                       encodeURIComponent(longUrl);
 
         const response = await fetch(apiUrl);
-        const shortUrl = await response.text(); // plain text response
+        const shortUrl = await response.text(); // TinyURL plain text return karta hai
 
         if (!shortUrl || !shortUrl.startsWith('http')) {
           throw new Error('Invalid response from TinyURL');
