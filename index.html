@@ -92,13 +92,14 @@
     <div class="output">
         <p id="shortLink"></p>
         <div class="qr-box">
-            <div id="qrcode"></div>
+            <!-- YAHI SIRF EK CANVAS RAKHO -->
+            anvas id="qrCanvas"></canvas>
         </div>
     </div>
 </div>
 
-<!-- QRCode.js library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- QRIOUS library -->
+<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
 
 <script>
 async function generate() {
@@ -120,19 +121,15 @@ async function generate() {
             throw new Error("TinyURL error");
         }
 
-        // Show short URL
+        // Short URL show karo
         document.getElementById("shortLink").innerHTML =
             "Short URL: <a href='" + tinyUrl + "' target='_blank'>" + tinyUrl + "</a>";
 
-        // Clear old QR (agar koi ho)
-        const qrDiv = document.getElementById("qrcode");
-        qrDiv.innerHTML = "";
-
-        // Generate QR for the TinyURL
-        new QRCode(qrDiv, {
-            text: tinyUrl,
-            width: 200,
-            height: 200
+        // QR generate karo (same canvas pe har baar overwrite karega)
+        new QRious({
+            element: document.getElementById("qrCanvas"),
+            value: tinyUrl,
+            size: 200
         });
     } catch (e) {
         console.error(e);
