@@ -118,7 +118,7 @@ function generateQR() {
         return;
     }
 
-    var qr = new QRious({
+    new QRious({
         element: document.getElementById("qrCanvas"),
         size: 200,
         value: qrText
