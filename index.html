@@ -71,6 +71,27 @@
             color: #0066cc;
             word-break: break-all;
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-buttons button {
+            flex: 1;
+            padding: 10px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .action-buttons button:hover {
+            background: #0052a3;
+        }
     </style>
 </head>
 
@@ -89,10 +110,15 @@
     <input type="text" id="longUrl" placeholder="Enter your long URL here...">
     <button onclick="generate()">Shorten & Generate QR</button>
 
-    <div class="output">
+    <div class="output" id="outputSection" style="display:none;">
         <p id="shortLink"></p>
+        
+        <div class="action-buttons">
+            <button onclick="copyLink()">Copy Link</button>
+            <button onclick="downloadQR()">Download QR</button>
+        </div>
+
         <div class="qr-box">
-            <!-- YAHI SIRF EK CANVAS RAKHO -->
             anvas id="qrCanvas"></canvas>
         </div>
     </div>
@@ -102,6 +128,8 @@
 <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
 
 <script>
+let currentShortUrl = "";
+
 async function generate() {
     const input = document.getElementById("longUrl");
     const longUrl = input.value.trim();
@@ -121,20 +149,55 @@ async function generate() {
             throw new Error("TinyURL error");
         }
 
+        currentShortUrl = tinyUrl;
+
         // Short URL show karo
         document.getElementById("shortLink").innerHTML =
             "Short URL: <a href='" + tinyUrl + "' target='_blank'>" + tinyUrl + "</a>";
 
-        // QR generate karo (same canvas pe har baar overwrite karega)
+        // QR generate karo
         new QRious({
             element: document.getElementById("qrCanvas"),
             value: tinyUrl,
             size: 200
         });
+
+        // Output section visible karo
+        document.getElementById("outputSection").style.display = "block";
+
     } catch (e) {
         console.error(e);
         alert("TinyURL se short link nahi bana, thodi der baad try karo.");
     }
+}
+
+function copyLink() {
+    if (!currentShortUrl) {
+        alert("Pehle short link generate karo!");
+        return;
+    }
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(currentShortUrl).then(() => {
+        alert("Link copied: " + currentShortUrl);
+    }).catch(err => {
+        console.error(err);
+        alert("Copy nahi ho paya, manually copy karo.");
+    });
+}
+
+function downloadQR() {
+    const canvas = document.getElementById("qrCanvas");
+    if (!canvas) {
+        alert("QR code nahi mila!");
+        return;
+    }
+
+    // Canvas ko image me convert karke download
+    const link = document.createElement("a");
+    link.download = "shortsetu-qr.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
 }
 </script>
 
