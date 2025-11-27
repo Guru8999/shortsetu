@@ -1,148 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShortSetu – Fast URL Shortener & QR Generator</title>
+async function shortenWithTinyApi(longUrl) {
+  const apiKey = 'YAHAN_APNA_API_KEY_DAL'; // TinyURL dev panel se
+  const apiUrl = 'https://api.tinyurl.com/create';
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding-top: 70px; /* Navbar height ke liye padding */
-            background: #f7f7f7;
-        }
+  const res = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + apiKey,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      url: longUrl
+      // yaha extra options bhi ho sakte hain docs ke hisab se
+    })
+  });
 
-        nav {
-            background: #ffffff;
-            padding: 15px 30px;
-            display: flex;
-            gap: 25px;
-            font-size: 16px;
-            border-bottom: 1px solid #ddd;
-            position: fixed; /* Fixed navbar */
-            top: 0;
-            width: 100%;
-            z-index: 999;
-        }
+  if (!res.ok) {
+    throw new Error('TinyURL API error: ' + res.status);
+  }
 
-        nav a {
-            text-decoration: none;
-            color: black;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #1a73e8;
-        }
-
-        .container {
-            max-width: 550px;
-            margin: 30px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0px 0px 12px #ccc;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            background: #1a73e8;
-            color: white;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #0b5fcc;
-        }
-
-        .output {
-            margin-top: 25px;
-        }
-
-        .qr-box {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            margin-top: 40px;
-            color: #555;
-            font-size: 14px;
-        }
-    </style>
-</head>
-
-<body>
-
-<nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="privacy.html">Privacy Policy</a>
-</nav>
-
-<div class="container">
-    <h2>ShortSetu – URL Shortener + QR Generator</h2>
-
-    <input type="text" id="longUrl" placeholder="Enter your long URL here...">
-    <button onclick="generate()">Generate Short Link + QR</button>
-
-    <div class="output">
-        <p id="shortLink"></p>
-        <div class="qr-box">
-            <canvas id="qrCanvas"></canvas>
-        </div>
-    </div>
-</div>
-
-<footer>
-    © 2025 ShortSetu | Free Tool by Ghanshyam
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
-
-<script>
-function generate() {
-    let longUrl = document.getElementById("longUrl").value;
-    if (!longUrl) {
-        alert("Please enter a URL!");
-        return;
-    }
-
-    // Temporary short link logic
-    let random = Math.random().toString(36).substring(2, 8);
-    let shortUrl = "https://guru8999.github.io/shortsetu/" + random;
-
-    // Display short link
-    document.getElementById("shortLink").innerHTML =
-        "Short URL: <a href='" + longUrl + "' target='_blank'>" + shortUrl + "</a>";
-
-    // Generate QR Code
-    var qr = new QRious({
-        element: document.getElementById("qrCanvas"),
-        value: shortUrl,
-        size: 200
-    });
+  const data = await res.json();
+  // Docs ke hisab se field ka naam check karo (often data.tiny_url ya shortened_url)
+  return data.data.tiny_url;
 }
-</script>
-
-</body>
-</html>
